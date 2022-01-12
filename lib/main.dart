@@ -67,8 +67,21 @@ class _SuperHeroName extends State<SuperHeroNameGenerator> {
 
 
   Widget _buildRow(String superHerName){
+    final _markedFav = _hearted.contains(superHerName);
     return ListTile(
       title: Text(superHerName),
+      trailing: Icon(
+          _markedFav ? Icons.favorite : Icons.favorite_border,
+            color : _markedFav ? Colors.red : null,
+      ),
+      onTap: () {
+        setState(() {
+          _markedFav ? _hearted.remove(superHerName) : _hearted.add(superHerName);
+        });
+      },
+      onLongPress: () {
+        _pushExample(superHerName);
+      },
     );
 
   }
@@ -92,6 +105,23 @@ class _SuperHeroName extends State<SuperHeroNameGenerator> {
     //   SuperHero.random(),
     // ];
     return myNames;
+  }
+
+  void _pushExample(String superHerName) {
+    Navigator.of(context).push(
+        MaterialPageRoute<void>(builder: (BuildContext context) {
+         final _superHeroName = superHerName;
+           return Scaffold(
+             appBar: AppBar(
+            title: Text(_superHeroName),
+             ),
+             body: Center(
+               child: Image.network('https://picsum.photos/200/300')
+             )
+           );
+        }),
+    );
+
   }
 
 }
